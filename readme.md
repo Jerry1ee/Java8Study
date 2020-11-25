@@ -43,6 +43,8 @@ stream API小练习
 - 主要是为了防止空指针异常
 
 ## interfacefunction
+- 类优先原则
+- 
 
 
 
