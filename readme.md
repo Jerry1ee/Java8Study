@@ -44,7 +44,6 @@ stream API小练习
 
 ## interfacefunction
 - 类优先原则
-- 
+- 多实现时，要指定实现的是哪个接口的方法
 
-
-
+## 
