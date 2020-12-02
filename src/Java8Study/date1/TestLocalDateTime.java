@@ -3,6 +3,7 @@ package Java8Study.date1;
 import org.junit.Test;
 
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 
@@ -99,7 +100,53 @@ public class TestLocalDateTime {
         //TemporalAdjusters 为 TemporalAdjuster 提供了很多静态的实现方法，可以直接调用
         ldt.with(TemporalAdjusters.firstDayOfMonth());
 
-        //自定义 ： 下一个生日
+        //自定义 ： 下一个工作日
+        LocalDateTime nextWorkDay = ldt.with((l) -> {
+            LocalDateTime ldt1 = (LocalDateTime) l;
 
+            DayOfWeek dow = ldt1.getDayOfWeek();
+            if(dow.equals(DayOfWeek.FRIDAY)){
+                ldt1.plusDays(3);
+            }else if(dow.equals(DayOfWeek.SATURDAY)){
+                ldt1.plusDays(2);
+            }else {
+                ldt1.plusDays(1);
+            }
+            return ldt1;
+
+        });
+
+        System.out.println(nextWorkDay);
+    }
+    //5. DateTimeFormatter  格式化 时间/日期
+    @Test
+    public void test5(){
+        DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
+        LocalDateTime ldt = LocalDateTime.now();
+        String strDate = ldt.format(dtf);
+        System.out.println(strDate);
+
+        System.out.println("_______________");
+
+        //自定义 formatter
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss");
+        String strDate2 = dtf2.format(ldt);
+        System.out.println(strDate2);
+
+        //反向解析
+        LocalDateTime newDate = ldt.parse(strDate2, dtf2);
+        System.out.println(newDate);
+    }
+
+    //6. ZoneDate , ZoneTime , ZoneDateTime
+    @Test
+    public void test6(){
+        //指定时区 构建时间
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Europe/Tallinn"));
+        System.out.println(now);
+
+        //也可以通过atZone 再次指定时区
+        ZonedDateTime zdt = now.atZone(ZoneId.of("Europe/Tallinn"));
+        System.out.println(zdt);
     }
 }
